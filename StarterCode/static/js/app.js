@@ -1,28 +1,84 @@
-//Use the D3 library to read in samples.json from the URL
+// Use D3 to fetch and parse the JSON file
+d3.json("samples.json").then(function(data) {
+  let sampleValues = data.samples[0].sample_values.slice(0, 10).reverse();
+  console.log(sampleValues);
+  let otuIds = data.samples[0].otu_ids.reverse();
+  console.log(otuIds);
+  let otuLabels = data.samples[0].otu_labels.slice(0, 10).reverse();
+  console.log(otuLabels);
 
-//Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found 
-//in that individual
-//Use sample_values as the values for the bar chart.
+  // Create a dropdown menu
+  let dropdown = d3.select("#selDataset");
+  dropdown.selectAll("option")
+      .data(data.names)
+      .enter()
+      .append("option")
+      .text(function(d) {
+          return d;
+      });
 
-//Use otu_ids as the labels for the bar chart.
+  // Initial plot
+  plotBarChart(sampleValues, otuIds, otuLabels);
 
-//Use otu_labels as the hovertext for the chart.
+  // Update plot when dropdown selection changes
+  dropdown.on("change", function() {
+      let selectedSample = dropdown.property("value");
+      let selectedData = data.samples.find(sample => sample.id === selectedSample);
 
-//Create a bubble chart that displays each sample.
+      // Update the bar chart with the selected data
+      plotBarChart(selectedData.sample_values.slice(0, 10),
+          selectedData.otu_ids.slice(0, 10),
+          selectedData.otu_labels.slice(0, 10));
+  });
+});
 
-//Use otu_ids for the x values.
+// Function to create/update the horizontal bar chart
+function plotBarChart(sampleValues, otuIds, otuLabels) {
+  // Clear existing chart
+  d3.select("#bar").html("");
 
-//Use sample_values for the y values.
+  // Create horizontal bar chart
+  let trace = {
+      x: sampleValues,
+      y: otuIds.map(id => `OTU ${id}`),
+      text: otuLabels,
+      type: "bar",
+      orientation: "h"
+  };
 
-//Use sample_values for the marker size.
+  let layout = {
+      title: "Top 10 OTUs",
+      xaxis: { title: "Sample Values" },
+      yaxis: { title: "OTU IDs" }
+  };
 
-//Use otu_ids for the marker colors.
+  let data = [trace];
 
-//Use otu_labels for the text values
+  Plotly.newPlot("bar", data, layout);
+}
+// create a bubble chart that displays each sample
 
-//Display the sample metadata, i.e., an individual's demographic information
+function plotBubbleChart(otuIds, sampleValues, otuLabels) {
+  // Create bubble chart
+  let trace = {
+      x: otuIds,
+      y: sampleValues,
+      mode: 'markers',
+      marker: {
+          size: sampleValues,
+          color: otuIds,
+      },
+      text: otuLabels
+  };
 
-//Display each key-value pair from the metadata JSON object somewhere on the page.
+  let layout = {
+      title: 'Bubble Chart - Sample Values vs OTU IDs',
+      xaxis: { title: 'OTU IDs' },
+      yaxis: { title: 'Sample Values' }
+  };
 
+  let data = [trace];
 
-//Update all the plots when a new sample is selected
+  Plotly.newPlot('bubble', data, layout);
+}
+
