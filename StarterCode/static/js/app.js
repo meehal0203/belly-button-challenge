@@ -156,3 +156,4 @@ function plotGaugeChart(washingFrequency) {
     Plotly.newPlot("gauge", data, layout);
 }
 
+// plot new gauge
