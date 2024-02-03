@@ -37,8 +37,8 @@ d3.json("samples.json").then(function (data) {
 
         // Update  with the selected data
         plotBarChart(selectedData.sample_values.slice(0, 10).reverse(),
-            selectedData.otu_ids.slice(0, 10),
-            selectedData.otu_labels.slice(0, 10));
+                    selectedData.otu_ids.slice(0, 10),
+                    selectedData.otu_labels.slice(0, 10));
         plotBubbleChart(selectedData.otu_ids, selectedData.sample_values, selectedData.otu_labels)
         // Display metadata for the selected sample
         displaySampleMetadata(selectedMetadata)
@@ -81,7 +81,7 @@ function plotBubbleChart(otuIds, sampleValues, otuLabels) {
         //y: data.samples[0].sampleValues,
         x: otuIds,
         y: sampleValues,
-        mode: 'markers',
+        mode: "markers",
         marker: {
             size: sampleValues,
             color: otuIds,
@@ -90,21 +90,21 @@ function plotBubbleChart(otuIds, sampleValues, otuLabels) {
     };
 
     let layout = {
-        title: 'Bubble Chart - Sample Values vs OTU IDs',
-        xaxis: { title: 'OTU IDs' },
-        yaxis: { title: 'Sample Values' }
+        title: "Bubble Chart - Sample Values vs OTU IDs",
+        xaxis: {title: "OTU IDs"},
+        yaxis: {title: "Sample Values"}
     };
 
     let data = [trace];
 
-    Plotly.newPlot('bubble', data, layout);
+    Plotly.newPlot("bubble", data, layout);
 }
 
 // 4.Display the sample metadata, i.e., an individual's demographic information.
 
 function displaySampleMetadata(metadata) {
     // Select the metadata panel
-    var metadataPanel = d3.select("#sample-metadata");
+    let metadataPanel = d3.select("#sample-metadata");
 
     // Clear existing metadata
     metadataPanel.html("");
@@ -139,6 +139,9 @@ function plotGaugeChart(washingFrequency) {
                 { range: [7, 8], color: "#FF4500" },
                 { range: [8, 9], color: "#FF0000" }
             ],
+
+            // '#d9ed92', 100: '#36420b', 200: '#6c8415', 300: '#a2c520', 400: '#c3e250', 500: '#d9ed92',
+            //  600: '#e1f1a7', 700: '#e8f4bd', 800: '#f0f8d3', 900: '#f7fbe9' }
             threshold: {
                 line: { color: "red", width: 4 },
                 thickness: 0.75,
@@ -150,6 +153,6 @@ function plotGaugeChart(washingFrequency) {
     let layout = { width: 400, height: 300, margin: { t: 0, b: 0 } };
     let data = [trace];
 
-    Plotly.newPlot('gauge', data, layout);
+    Plotly.newPlot("gauge", data, layout);
 }
 
