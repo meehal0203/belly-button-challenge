@@ -1,6 +1,9 @@
 # Belly-Button Biodiversity Data Analysis
 
-I will build an interactive dashboard to explore the Belly Button Biodiversity datasetLinks to an external site., which catalogs the microbes that colonize human navels. The dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare.
+I will build an interactive dashboard to explore the Belly Button Biodiversity dataset, which catalogs the microbes that colonize human navels. This dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare. This dashboard will also chronicle demographic data and belly-button wash frequencies among the individuals participating in the study.
+
+![image](https://github.com/meehal0203/belly-button-challenge/assets/146681542/6efb1769-a939-469c-9df7-7062640b47cd)
+
 
 ## Steps to be taken:
 
