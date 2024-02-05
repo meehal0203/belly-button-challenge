@@ -27,4 +27,4 @@ I will build an interactive dashboard to explore the Belly Button Biodiversity d
  
 ![image](https://github.com/meehal0203/belly-button-challenge/assets/146681542/f0c90b34-a9c1-45b4-af57-c8ed24d3cd5a)
 
-* Analysis will be posted to Github Pages at the following url - 
+* [Analysis will be posted to Github Pages here](https://meehal0203.github.io/belly-button-challenge/)
