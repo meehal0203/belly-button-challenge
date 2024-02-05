@@ -1,14 +1,38 @@
 // let url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json"
 // d3.json(url).then(function(data) {}
+function getSubjectData(subjectID, dataValues) {
 
-// Use D3 to fetch and parse the JSON file
-d3.json("samples.json").then(function (data) {
-    let sampleValues = data.samples[0].sample_values.slice(0, 10).reverse();
-    console.log(sampleValues);
-    let otuIds = data.samples[0].otu_ids;
-    console.log(otuIds);
-    let otuLabels = data.samples[0].otu_labels.slice(0, 10);
-    console.log(otuLabels);
+    let matchingValues = dataValues.filter(value => value.id == subjectID);
+    return matchingValues[0];
+}
+function optionChanged(subjectID) {
+
+    // Use D3 to fetch and parse the JSON file
+    d3.json("samples.json").then(function (data) {
+        let subjectValues = getSubjectData(subjectID, data.samples)
+        let sampleValues = subjectValues.sample_values.slice(0, 10).reverse();
+        console.log(sampleValues);
+        let otuIds = subjectValues.otu_ids;
+        console.log(otuIds);
+        let otuLabels = subjectValues.otu_labels.slice(0, 10);
+        console.log(otuLabels);
+
+        // Display bar chart for the first sample
+        plotBarChart(sampleValues, otuIds, otuLabels);
+        // Display bubble chart for the first sample
+        plotBubbleChart(otuIds, sampleValues, otuLabels);
+
+        let subjectMetadata = getSubjectData(subjectID, data.metadata)
+        // Display metadata for the first sample
+        displaySampleMetadata(subjectMetadata);
+        // plot gauge for first sample
+        plotGaugeChart(subjectMetadata);
+    });
+}
+
+// // Use D3 to fetch and parse the JSON file
+    d3.json("samples.json").then(function (data) {  
+
 
     // Create a dropdown menu
     let dropdown = d3.select("#selDataset");
@@ -19,32 +43,10 @@ d3.json("samples.json").then(function (data) {
         .text(function (d) {
             return d;
         });
+    
 
-    // Initial plot
-    // Display bar chart for the first sample
-    plotBarChart(sampleValues, otuIds, otuLabels);
-    // Display bubble chart for the first sample
-    plotBubbleChart(otuIds, sampleValues, otuLabels);
-    // Display metadata for the first sample
-    displaySampleMetadata(data.metadata[0]);
-    // plot gauge for first sample
-    plotGaugeChart(data.metadata[0]);
-    // Update plot when dropdown selection changes
-    dropdown.on("change", function () {
-        let selectedSample = dropdown.property("value");
-        let selectedData = data.samples.find(sample => sample.id === selectedSample);
-        let selectedMetadata = data.metadata.find(metadata => metadata.id === parseInt(selectedSample));
+        optionChanged(data.names[0]);
 
-        // Update  with the selected data
-        plotBarChart(selectedData.sample_values.slice(0, 10).reverse(),
-                    selectedData.otu_ids.slice(0, 10),
-                    selectedData.otu_labels.slice(0, 10));
-        plotBubbleChart(selectedData.otu_ids, selectedData.sample_values, selectedData.otu_labels)
-        // Display metadata for the selected sample
-        displaySampleMetadata(selectedMetadata)
-        plotGaugeChart(selectedMetadata.wfreq);
-        ;
-    });
 });
 
 
@@ -77,8 +79,8 @@ function plotBarChart(sampleValues, otuIds, otuLabels) {
  function plotBubbleChart(otuIds, sampleValues, otuLabels) {
     // Create bubble chart
      let trace = {
-        x: data.samples[0].otuIds,
-        y: data.samples[0].sampleValues,
+        x: otuIds,
+        y: sampleValues,
          x: otuIds,
          y: sampleValues,
          mode: "markers",
@@ -117,12 +119,12 @@ function displaySampleMetadata(metadata) {
     });
 }
 
-// Function to create/update the gauge chart
-function plotGaugeChart(washingFrequency) {
+function plotGaugeChart(metadata) {
     // Clear existing chart
     d3.select("#gauge").html("");
 
     // Create gauge chart
+    let washingFrequency = metadata.wfreq;
     let trace = {
         type: "indicator",
         mode: "gauge+number",
@@ -141,21 +143,18 @@ function plotGaugeChart(washingFrequency) {
                 { range: [7, 8], color: "#FF4500" },
                 { range: [8, 9], color: "#FF0000" }
             ],
-
-            // '#d9ed92', 100: '#36420b', 200: '#6c8415', 300: '#a2c520', 400: '#c3e250', 500: '#d9ed92',
-            //  600: '#e1f1a7', 700: '#e8f4bd', 800: '#f0f8d3', 900: '#f7fbe9' }
             threshold: {
                 line: { color: "red", width: 4 },
                 thickness: 0.75,
                 value: washingFrequency
-            }
+            },
+            // Display the amount of times washed in the center of the gauge
+            text: `Times Washed: ${washingFrequency}`
         }
     };
 
     let layout = { width: 400, height: 300, margin: { t: 0, b: 0 } };
     let data = [trace];
 
-    Plotly.newPlot("gauge", data, layout);
+    Plotly.newPlot('gauge', data, layout);
 }
-
-
