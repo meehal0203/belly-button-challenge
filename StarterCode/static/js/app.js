@@ -74,31 +74,33 @@ function plotBarChart(sampleValues, otuIds, otuLabels) {
 };
 // 3.create a bubble chart that displays each sample
 
-function plotBubbleChart(otuIds, sampleValues, otuLabels) {
+ function plotBubbleChart(otuIds, sampleValues, otuLabels) {
     // Create bubble chart
-    let trace = {
-        //x: data.samples[0].otuIds,
-        //y: data.samples[0].sampleValues,
-        x: otuIds,
-        y: sampleValues,
-        mode: "markers",
+     let trace = {
+        x: data.samples[0].otuIds,
+        y: data.samples[0].sampleValues,
+         x: otuIds,
+         y: sampleValues,
+         mode: "markers",
         marker: {
             size: sampleValues,
-            color: otuIds,
-        },
+             color: otuIds,
+         },
         text: otuLabels
-    };
+     };
 
-    let layout = {
-        title: "Bubble Chart - Sample Values vs OTU IDs",
-        xaxis: {title: "OTU IDs"},
-        yaxis: {title: "Sample Values"}
-    };
+     let layout = {
+         title: "Bubble Chart - Sample Values vs OTU IDs",
+         xaxis: {title: "OTU IDs"},
+         yaxis: {title: "Sample Values"}
+     };
 
-    let data = [trace];
+     let data = [trace];
 
     Plotly.newPlot("bubble", data, layout);
 }
+
+
 
 // 4.Display the sample metadata, i.e., an individual's demographic information.
 
@@ -156,4 +158,4 @@ function plotGaugeChart(washingFrequency) {
     Plotly.newPlot("gauge", data, layout);
 }
 
-// plot new gauge
+
