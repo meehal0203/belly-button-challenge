@@ -90,7 +90,7 @@ function plotBarChart(sampleValues, otuIds, otuLabels) {
          },
         text: otuLabels
      };
-
+     
      let layout = {
          title: "Bubble Chart - Sample Values vs OTU IDs",
          xaxis: {title: "OTU IDs"},
