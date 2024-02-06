@@ -87,6 +87,7 @@ function plotBarChart(sampleValues, otuIds, otuLabels) {
         marker: {
             size: sampleValues,
              color: otuIds,
+             colorscale: "Viridis",
          },
         text: otuLabels
      };
